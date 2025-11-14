@@ -34,8 +34,8 @@ export default function OrderScreen() {
     };
 
     const handleOrder = () => {
-        // Handle order submission
-        console.log('Order placed!');
+        // Navigate to delivery tracking screen
+        router.push('/delivery' as any);
     };
 
     return (
