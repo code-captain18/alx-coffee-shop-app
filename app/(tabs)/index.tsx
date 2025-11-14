@@ -1,12 +1,27 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Home() {
+    const router = useRouter();
     const [selectedCategory, setSelectedCategory] = useState('All Coffee');
 
     const categories = ['All Coffee', 'Machiato', 'Latte', 'Americano'];
+
+    const handleCoffeePress = (coffee: any) => {
+        router.push({
+            pathname: '/coffee-detail',
+            params: {
+                id: coffee.id.toString(),
+                name: coffee.name,
+                price: coffee.price.toString(),
+                rating: coffee.rating.toString(),
+                description: coffee.description
+            }
+        } as any);
+    };
 
     const coffeeProducts = [
         {
@@ -87,16 +102,19 @@ export default function Home() {
                                 <TouchableOpacity
                                     key={category}
                                     onPress={() => setSelectedCategory(category)}
-                                    className={`px-4 py-2 rounded-xl mr-3 ${selectedCategory === category
-                                        ? 'bg-orange-500'
-                                        : 'bg-gray-800'
-                                        }`}
+                                    style={{
+                                        paddingHorizontal: 16,
+                                        paddingVertical: 8,
+                                        borderRadius: 12,
+                                        marginRight: 12,
+                                        backgroundColor: selectedCategory === category ? '#C67C4E' : '#E3E3E3'
+                                    }}
                                 >
                                     <Text
-                                        className={`font-medium ${selectedCategory === category
-                                            ? 'text-white'
-                                            : 'text-gray-400'
-                                            }`}
+                                        style={{
+                                            fontFamily: 'Sora_500Medium',
+                                            color: selectedCategory === category ? 'white' : '#313131'
+                                        }}
                                     >
                                         {category}
                                     </Text>
@@ -110,7 +128,12 @@ export default function Home() {
                 <View className="px-6 pb-6">
                     <View className="flex-row flex-wrap justify-between">
                         {coffeeProducts.map((coffee) => (
-                            <View key={coffee.id} style={{ width: '48%', backgroundColor: '#F9F2ED', borderRadius: 16, padding: 16, marginBottom: 16 }}>
+                            <TouchableOpacity
+                                key={coffee.id}
+                                style={{ width: '48%', backgroundColor: '#F9F2ED', borderRadius: 16, padding: 16, marginBottom: 16 }}
+                                onPress={() => handleCoffeePress(coffee)}
+                                activeOpacity={0.8}
+                            >
                                 <View className="relative mb-3">
                                     <Image
                                         source={coffee.image}
@@ -132,7 +155,7 @@ export default function Home() {
                                         <Ionicons name="add" size={20} color="white" />
                                     </TouchableOpacity>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         ))}
                     </View>
                 </View>
