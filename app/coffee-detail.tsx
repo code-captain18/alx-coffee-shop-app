@@ -32,6 +32,17 @@ export default function CoffeeDetail() {
         setIsFavorite(!isFavorite);
     };
 
+    const handleBuyNow = () => {
+        router.push({
+            pathname: '/order',
+            params: {
+                name: coffeeName,
+                price: coffeePrice.toString(),
+                description: coffeeDescription
+            }
+        } as any);
+    };
+
     return (
         <>
             <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
@@ -305,6 +316,7 @@ export default function CoffeeDetail() {
                             </View>
 
                             <TouchableOpacity
+                                onPress={handleBuyNow}
                                 style={{
                                     backgroundColor: '#C67C4E',
                                     paddingHorizontal: 28,
