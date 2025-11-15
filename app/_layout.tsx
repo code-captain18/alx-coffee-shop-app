@@ -32,6 +32,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="coffee-detail" options={{ headerShown: false }} />
         <Stack.Screen name="order" options={{ headerShown: false }} />
+        <Stack.Screen name="delivery" options={{ headerShown: false }} />
       </Stack>
     </SafeAreaProvider>
   );
