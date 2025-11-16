@@ -1,7 +1,8 @@
+import { orderStyles } from '@/styles/orderStyles';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function OrderScreen() {
@@ -12,9 +13,26 @@ export default function OrderScreen() {
     const [isDiscountApplied, setIsDiscountApplied] = useState(true);
 
     // Get coffee data from params or use defaults
+    const coffeeId = parseInt(params.id as string) || 1;
     const coffeeName = params.name || 'Caffe Mocha';
     const coffeePrice = parseFloat(params.price as string) || 4.53;
     const coffeeDescription = params.description || 'Deep Foam';
+
+    // Get the correct image based on coffee ID
+    const getImageSource = (id: number) => {
+        switch (id) {
+            case 1:
+                return require('@/assets/images/coffee1.png');
+            case 2:
+                return require('@/assets/images/coffee2.png');
+            case 3:
+                return require('@/assets/images/coffee3.png');
+            case 4:
+                return require('@/assets/images/coffee4.png');
+            default:
+                return require('@/assets/images/coffee1.png');
+        }
+    };
 
     // Calculate pricing
     const itemTotal = coffeePrice * quantity;
@@ -41,406 +59,250 @@ export default function OrderScreen() {
     return (
         <>
             <StatusBar barStyle="dark-content" backgroundColor="white" />
-            <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-                <View style={{ flex: 1 }}>
+            <SafeAreaView style={orderStyles.safeArea}>
+                <View style={orderStyles.container}>
                     {/* Header */}
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            paddingHorizontal: 24,
-                            paddingVertical: 16,
-                            backgroundColor: 'white',
-                        }}
-                    >
+                    <View style={orderStyles.header}>
                         <TouchableOpacity
                             onPress={handleBack}
-                            style={{
-                                width: 44,
-                                height: 44,
-                                borderRadius: 12,
-                                backgroundColor: '#F9F2ED',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
+                            style={orderStyles.backButton}
                         >
                             <Ionicons name="chevron-back" size={24} color="#313131" />
                         </TouchableOpacity>
 
-                        <Text
-                            style={{
-                                fontSize: 20,
-                                fontFamily: 'Sora_600SemiBold',
-                                color: '#313131',
-                                textAlign: 'center',
-                                flex: 1,
-                                marginRight: 44, // Balance the back button
-                            }}
-                        >
+                        <Text style={orderStyles.headerTitle}>
                             Order
                         </Text>
                     </View>
 
-                    <View style={{ flex: 1, paddingHorizontal: 24 }}>
-                        {/* Delivery Method Toggle */}
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                backgroundColor: '#F9F2ED',
-                                borderRadius: 14,
-                                padding: 4,
-                                marginBottom: 24,
-                            }}
-                        >
-                            <TouchableOpacity
-                                onPress={() => setDeliveryMethod('Deliver')}
-                                style={{
-                                    flex: 1,
-                                    paddingVertical: 12,
-                                    borderRadius: 10,
-                                    backgroundColor: deliveryMethod === 'Deliver' ? '#C67C4E' : 'transparent',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontSize: 16,
-                                        fontFamily: 'Sora_600SemiBold',
-                                        color: deliveryMethod === 'Deliver' ? 'white' : '#313131',
-                                    }}
-                                >
-                                    Deliver
-                                </Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                onPress={() => setDeliveryMethod('Pick Up')}
-                                style={{
-                                    flex: 1,
-                                    paddingVertical: 12,
-                                    borderRadius: 10,
-                                    backgroundColor: deliveryMethod === 'Pick Up' ? '#C67C4E' : 'transparent',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontSize: 16,
-                                        fontFamily: 'Sora_600SemiBold',
-                                        color: deliveryMethod === 'Pick Up' ? 'white' : '#313131',
-                                    }}
-                                >
-                                    Pick Up
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        {/* Delivery Address */}
-                        <View style={{ marginBottom: 24 }}>
-                            <Text
-                                style={{
-                                    fontSize: 18,
-                                    fontFamily: 'Sora_600SemiBold',
-                                    color: '#313131',
-                                    marginBottom: 12,
-                                }}
-                            >
-                                Delivery Address
-                            </Text>
-
-                            <View style={{ marginBottom: 16 }}>
-                                <Text
-                                    style={{
-                                        fontSize: 16,
-                                        fontFamily: 'Sora_600SemiBold',
-                                        color: '#313131',
-                                        marginBottom: 4,
-                                    }}
-                                >
-                                    Jl. Kpg Sutoyo
-                                </Text>
-                                <Text
-                                    style={{
-                                        fontSize: 14,
-                                        fontFamily: 'Sora_400Regular',
-                                        color: '#9CA3AF',
-                                        lineHeight: 20,
-                                    }}
-                                >
-                                    Kpg. Sutoyo No. 620, Bilzen, Tanjungbalai.
-                                </Text>
-                            </View>
-
-                            <View style={{ flexDirection: 'row' }}>
+                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                        <View style={{ paddingHorizontal: 24 }}>
+                            {/* Delivery Method Toggle */}
+                            <View style={orderStyles.deliveryToggle}>
                                 <TouchableOpacity
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderWidth: 1,
-                                        borderColor: '#E3E3E3',
-                                        borderRadius: 12,
-                                        paddingHorizontal: 12,
-                                        paddingVertical: 8,
-                                        marginRight: 12,
-                                    }}
+                                    onPress={() => setDeliveryMethod('Deliver')}
+                                    style={[
+                                        orderStyles.toggleButton,
+                                        deliveryMethod === 'Deliver' ? orderStyles.toggleButtonActive : {}
+                                    ]}
                                 >
-                                    <Ionicons name="create-outline" size={16} color="#313131" />
                                     <Text
-                                        style={{
-                                            fontSize: 14,
-                                            fontFamily: 'Sora_400Regular',
-                                            color: '#313131',
-                                            marginLeft: 8,
-                                        }}
+                                        style={deliveryMethod === 'Deliver' ? orderStyles.toggleTextActive : orderStyles.toggleTextInactive}
                                     >
-                                        Edit Address
+                                        Deliver
                                     </Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderWidth: 1,
-                                        borderColor: '#E3E3E3',
-                                        borderRadius: 12,
-                                        paddingHorizontal: 12,
-                                        paddingVertical: 8,
-                                    }}
+                                    onPress={() => setDeliveryMethod('Pick Up')}
+                                    style={[
+                                        orderStyles.toggleButton,
+                                        deliveryMethod === 'Pick Up' ? orderStyles.toggleButtonActive : {}
+                                    ]}
                                 >
-                                    <Ionicons name="document-text-outline" size={16} color="#313131" />
                                     <Text
-                                        style={{
-                                            fontSize: 14,
-                                            fontFamily: 'Sora_400Regular',
-                                            color: '#313131',
-                                            marginLeft: 8,
-                                        }}
+                                        style={deliveryMethod === 'Pick Up' ? orderStyles.toggleTextActive : orderStyles.toggleTextInactive}
                                     >
-                                        Add Note
+                                        Pick Up
                                     </Text>
                                 </TouchableOpacity>
                             </View>
-                        </View>
 
-                        {/* Order Item */}
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                backgroundColor: 'white',
-                                borderWidth: 1,
-                                borderColor: '#F0F0F0',
-                                borderRadius: 16,
-                                padding: 16,
-                                marginBottom: 24,
-                            }}
-                        >
-                            <View
-                                style={{
-                                    width: 60,
-                                    height: 60,
-                                    borderRadius: 12,
-                                    backgroundColor: '#F9F2ED',
-                                    marginRight: 16,
-                                    overflow: 'hidden',
-                                }}
-                            >
-                                <Image
-                                    source={require('../assets/images/coffee_bg_img.png')}
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                    }}
-                                    resizeMode="cover"
-                                />
-                            </View>
-
-                            <View style={{ flex: 1 }}>
+                            {/* Delivery Address */}
+                            <View style={{ marginBottom: 24 }}>
                                 <Text
                                     style={{
-                                        fontSize: 16,
+                                        fontSize: 18,
                                         fontFamily: 'Sora_600SemiBold',
                                         color: '#313131',
-                                        marginBottom: 4,
+                                        marginBottom: 12,
                                     }}
                                 >
-                                    {coffeeName}
-                                </Text>
-                                <Text
-                                    style={{
-                                        fontSize: 14,
-                                        fontFamily: 'Sora_400Regular',
-                                        color: '#9CA3AF',
-                                    }}
-                                >
-                                    {coffeeDescription}
-                                </Text>
-                            </View>
-
-                            {/* Quantity Controls */}
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <TouchableOpacity
-                                    onPress={() => handleQuantityChange(-1)}
-                                    style={{
-                                        width: 32,
-                                        height: 32,
-                                        borderRadius: 16,
-                                        backgroundColor: '#F9F2ED',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <Ionicons name="remove" size={18} color="#313131" />
-                                </TouchableOpacity>
-
-                                <Text
-                                    style={{
-                                        fontSize: 16,
-                                        fontFamily: 'Sora_600SemiBold',
-                                        color: '#313131',
-                                        marginHorizontal: 16,
-                                    }}
-                                >
-                                    {quantity}
+                                    Delivery Address
                                 </Text>
 
-                                <TouchableOpacity
-                                    onPress={() => handleQuantityChange(1)}
-                                    style={{
-                                        width: 32,
-                                        height: 32,
-                                        borderRadius: 16,
-                                        backgroundColor: '#F9F2ED',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <Ionicons name="add" size={18} color="#313131" />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-                        {/* Discount Section */}
-                        <TouchableOpacity
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                paddingVertical: 16,
-                                borderBottomWidth: 1,
-                                borderBottomColor: '#F0F0F0',
-                                marginBottom: 24,
-                            }}
-                        >
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <View
-                                    style={{
-                                        width: 24,
-                                        height: 24,
-                                        borderRadius: 12,
-                                        backgroundColor: '#C67C4E',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        marginRight: 12,
-                                    }}
-                                >
-                                    <Ionicons name="pricetag" size={14} color="white" />
-                                </View>
-                                <Text
-                                    style={{
-                                        fontSize: 16,
-                                        fontFamily: 'Sora_600SemiBold',
-                                        color: '#313131',
-                                    }}
-                                >
-                                    1 Discount is Applies
-                                </Text>
-                            </View>
-                            <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
-                        </TouchableOpacity>
-
-                        {/* Payment Summary */}
-                        <View style={{ marginBottom: 24 }}>
-                            <Text
-                                style={{
-                                    fontSize: 18,
-                                    fontFamily: 'Sora_600SemiBold',
-                                    color: '#313131',
-                                    marginBottom: 16,
-                                }}
-                            >
-                                Payment Summary
-                            </Text>
-
-                            <View style={{ marginBottom: 20 }}>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
-                                    <Text
-                                        style={{
-                                            fontSize: 16,
-                                            fontFamily: 'Sora_400Regular',
-                                            color: '#313131',
-                                        }}
-                                    >
-                                        Price
-                                    </Text>
+                                <View style={{ marginBottom: 16 }}>
                                     <Text
                                         style={{
                                             fontSize: 16,
                                             fontFamily: 'Sora_600SemiBold',
                                             color: '#313131',
+                                            marginBottom: 4,
                                         }}
                                     >
-                                        $ {itemTotal.toFixed(2)}
+                                        Jl. Kpg Sutoyo
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            fontSize: 14,
+                                            fontFamily: 'Sora_400Regular',
+                                            color: '#9CA3AF',
+                                            lineHeight: 20,
+                                        }}
+                                    >
+                                        Kpg. Sutoyo No. 620, Bilzen, Tanjungbalai.
                                     </Text>
                                 </View>
 
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <Text
+                                <View style={{ flexDirection: 'row' }}>
+                                    <TouchableOpacity
                                         style={{
-                                            fontSize: 16,
-                                            fontFamily: 'Sora_400Regular',
-                                            color: '#313131',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            borderWidth: 1,
+                                            borderColor: '#E3E3E3',
+                                            borderRadius: 12,
+                                            paddingHorizontal: 12,
+                                            paddingVertical: 8,
+                                            marginRight: 12,
                                         }}
                                     >
-                                        Delivery Fee
-                                    </Text>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        {deliveryFee > 0 && (
-                                            <Text
-                                                style={{
-                                                    fontSize: 16,
-                                                    fontFamily: 'Sora_400Regular',
-                                                    color: '#9CA3AF',
-                                                    textDecorationLine: 'line-through',
-                                                    marginRight: 8,
-                                                }}
-                                            >
-                                                $ 2.0
-                                            </Text>
-                                        )}
+                                        <Ionicons name="create-outline" size={16} color="#313131" />
                                         <Text
                                             style={{
-                                                fontSize: 16,
-                                                fontFamily: 'Sora_600SemiBold',
+                                                fontSize: 14,
+                                                fontFamily: 'Sora_400Regular',
                                                 color: '#313131',
+                                                marginLeft: 8,
                                             }}
                                         >
-                                            $ {deliveryFee.toFixed(1)}
+                                            Edit Address
                                         </Text>
-                                    </View>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            borderWidth: 1,
+                                            borderColor: '#E3E3E3',
+                                            borderRadius: 12,
+                                            paddingHorizontal: 12,
+                                            paddingVertical: 8,
+                                        }}
+                                    >
+                                        <Ionicons name="document-text-outline" size={16} color="#313131" />
+                                        <Text
+                                            style={{
+                                                fontSize: 14,
+                                                fontFamily: 'Sora_400Regular',
+                                                color: '#313131',
+                                                marginLeft: 8,
+                                            }}
+                                        >
+                                            Add Note
+                                        </Text>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
 
-                            {/* Payment Method */}
+                            {/* Order Item */}
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    backgroundColor: 'white',
+                                    borderWidth: 1,
+                                    borderColor: '#F0F0F0',
+                                    borderRadius: 16,
+                                    padding: 16,
+                                    marginBottom: 24,
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        width: 60,
+                                        height: 60,
+                                        borderRadius: 12,
+                                        backgroundColor: '#F9F2ED',
+                                        marginRight: 16,
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    <Image
+                                        source={getImageSource(coffeeId)}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                        }}
+                                        resizeMode="cover"
+                                    />
+                                </View>
+
+                                <View style={{ flex: 1 }}>
+                                    <Text
+                                        style={{
+                                            fontSize: 16,
+                                            fontFamily: 'Sora_600SemiBold',
+                                            color: '#313131',
+                                            marginBottom: 4,
+                                        }}
+                                    >
+                                        {coffeeName}
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            fontSize: 14,
+                                            fontFamily: 'Sora_400Regular',
+                                            color: '#9CA3AF',
+                                        }}
+                                    >
+                                        {coffeeDescription}
+                                    </Text>
+                                </View>
+
+                                {/* Quantity Controls */}
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <TouchableOpacity
+                                        onPress={() => handleQuantityChange(-1)}
+                                        style={{
+                                            width: 32,
+                                            height: 32,
+                                            borderRadius: 16,
+                                            backgroundColor: '#F9F2ED',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        <Ionicons name="remove" size={18} color="#313131" />
+                                    </TouchableOpacity>
+
+                                    <Text
+                                        style={{
+                                            fontSize: 16,
+                                            fontFamily: 'Sora_600SemiBold',
+                                            color: '#313131',
+                                            marginHorizontal: 16,
+                                        }}
+                                    >
+                                        {quantity}
+                                    </Text>
+
+                                    <TouchableOpacity
+                                        onPress={() => handleQuantityChange(1)}
+                                        style={{
+                                            width: 32,
+                                            height: 32,
+                                            borderRadius: 16,
+                                            backgroundColor: '#F9F2ED',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        <Ionicons name="add" size={18} color="#313131" />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+
+                            {/* Discount Section */}
                             <TouchableOpacity
                                 style={{
                                     flexDirection: 'row',
                                     alignItems: 'center',
                                     justifyContent: 'space-between',
-                                    backgroundColor: '#F9F2ED',
-                                    borderRadius: 14,
-                                    padding: 16,
+                                    paddingVertical: 16,
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: '#F0F0F0',
                                     marginBottom: 24,
                                 }}
                             >
@@ -449,16 +311,52 @@ export default function OrderScreen() {
                                         style={{
                                             width: 24,
                                             height: 24,
-                                            borderRadius: 4,
+                                            borderRadius: 12,
                                             backgroundColor: '#C67C4E',
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             marginRight: 12,
                                         }}
                                     >
-                                        <Ionicons name="wallet" size={14} color="white" />
+                                        <Ionicons name="pricetag" size={14} color="white" />
                                     </View>
-                                    <View>
+                                    <Text
+                                        style={{
+                                            fontSize: 16,
+                                            fontFamily: 'Sora_600SemiBold',
+                                            color: '#313131',
+                                        }}
+                                    >
+                                        1 Discount is Applied
+                                    </Text>
+                                </View>
+                                <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+                            </TouchableOpacity>
+
+                            {/* Payment Summary */}
+                            <View style={{ marginBottom: 24 }}>
+                                <Text
+                                    style={{
+                                        fontSize: 18,
+                                        fontFamily: 'Sora_600SemiBold',
+                                        color: '#313131',
+                                        marginBottom: 16,
+                                    }}
+                                >
+                                    Payment Summary
+                                </Text>
+
+                                <View style={{ marginBottom: 20 }}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
+                                        <Text
+                                            style={{
+                                                fontSize: 16,
+                                                fontFamily: 'Sora_400Regular',
+                                                color: '#313131',
+                                            }}
+                                        >
+                                            Price
+                                        </Text>
                                         <Text
                                             style={{
                                                 fontSize: 16,
@@ -466,23 +364,99 @@ export default function OrderScreen() {
                                                 color: '#313131',
                                             }}
                                         >
-                                            Cash/Wallet
-                                        </Text>
-                                        <Text
-                                            style={{
-                                                fontSize: 14,
-                                                fontFamily: 'Sora_400Regular',
-                                                color: '#C67C4E',
-                                            }}
-                                        >
-                                            $ {total.toFixed(2)}
+                                            $ {itemTotal.toFixed(2)}
                                         </Text>
                                     </View>
+
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <Text
+                                            style={{
+                                                fontSize: 16,
+                                                fontFamily: 'Sora_400Regular',
+                                                color: '#313131',
+                                            }}
+                                        >
+                                            Delivery Fee
+                                        </Text>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            {deliveryFee > 0 && (
+                                                <Text
+                                                    style={{
+                                                        fontSize: 16,
+                                                        fontFamily: 'Sora_400Regular',
+                                                        color: '#9CA3AF',
+                                                        textDecorationLine: 'line-through',
+                                                        marginRight: 8,
+                                                    }}
+                                                >
+                                                    $ 2.0
+                                                </Text>
+                                            )}
+                                            <Text
+                                                style={{
+                                                    fontSize: 16,
+                                                    fontFamily: 'Sora_600SemiBold',
+                                                    color: '#313131',
+                                                }}
+                                            >
+                                                $ {deliveryFee.toFixed(1)}
+                                            </Text>
+                                        </View>
+                                    </View>
                                 </View>
-                                <Ionicons name="chevron-down" size={20} color="#313131" />
-                            </TouchableOpacity>
+
+                                {/* Payment Method */}
+                                <TouchableOpacity
+                                    style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        backgroundColor: '#F9F2ED',
+                                        borderRadius: 14,
+                                        padding: 16,
+                                        marginBottom: 24,
+                                    }}
+                                >
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <View
+                                            style={{
+                                                width: 24,
+                                                height: 24,
+                                                borderRadius: 4,
+                                                backgroundColor: '#C67C4E',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                marginRight: 12,
+                                            }}
+                                        >
+                                            <Ionicons name="wallet" size={14} color="white" />
+                                        </View>
+                                        <View>
+                                            <Text
+                                                style={{
+                                                    fontSize: 16,
+                                                    fontFamily: 'Sora_600SemiBold',
+                                                    color: '#313131',
+                                                }}
+                                            >
+                                                Cash/Wallet
+                                            </Text>
+                                            <Text
+                                                style={{
+                                                    fontSize: 14,
+                                                    fontFamily: 'Sora_400Regular',
+                                                    color: '#C67C4E',
+                                                }}
+                                            >
+                                                $ {total.toFixed(2)}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    <Ionicons name="chevron-down" size={20} color="#313131" />
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
+                    </ScrollView>
 
                     {/* Bottom Order Button */}
                     <View
