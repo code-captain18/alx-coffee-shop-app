@@ -9,17 +9,39 @@ export default function CoffeeDetail() {
     const params = useLocalSearchParams();
     const [selectedSize, setSelectedSize] = useState('M');
     const [isFavorite, setIsFavorite] = useState(false);
+    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     // Get data from navigation params or use fallbacks
+    const coffeeId = parseInt(params.id as string) || 1;
     const coffeeName = params.name || 'Caffe Mocha';
     const coffeePrice = parseFloat(params.price as string) || 4.53;
     const coffeeRating = parseFloat(params.rating as string) || 4.8;
-    const coffeeDescription = params.description || 'A cappuccino is an approximately 150 ml (5 oz) beverage, with 25 ml of espresso coffee and 85ml of fresh milk...';
+    const coffeeDescription = `A ${coffeeName} is an approximately 150 ml (5 oz) beverage, with 25 ml of espresso coffee and 85ml of fresh milk...`;
+
+    // Get the correct image based on coffee ID
+    const getImageSource = (id: number) => {
+        switch (id) {
+            case 1:
+                return require('@/assets/images/coffee1.png');
+            case 2:
+                return require('@/assets/images/coffee2.png');
+            case 3:
+                return require('@/assets/images/coffee3.png');
+            case 4:
+                return require('@/assets/images/coffee4.png');
+            default:
+                return require('@/assets/images/coffee1.png');
+        }
+    };
 
     const coffeeData = {
         reviewCount: 230,
-        image: require('../assets/images/coffee_bg_img.png'),
-        icons: ['🥛', '☕', '🧊']
+        image: getImageSource(coffeeId),
+        options: [
+            { id: 'delivery', name: 'Fast Delivery', icon: 'bicycle' },
+            { id: 'quality', name: 'Quality Bean', icon: 'ellipse' },
+            { id: 'milk', name: 'Extra Milk', icon: 'cube' }
+        ]
     };
 
     const sizes = ['S', 'M', 'L'];
@@ -32,10 +54,19 @@ export default function CoffeeDetail() {
         setIsFavorite(!isFavorite);
     };
 
+    const toggleOption = (optionId: string) => {
+        setSelectedOptions(prev =>
+            prev.includes(optionId)
+                ? prev.filter(id => id !== optionId)
+                : [...prev, optionId]
+        );
+    };
+
     const handleBuyNow = () => {
         router.push({
             pathname: '/order',
             params: {
+                id: coffeeId.toString(),
                 name: coffeeName,
                 price: coffeePrice.toString(),
                 description: coffeeDescription
@@ -177,21 +208,26 @@ export default function CoffeeDetail() {
                                     </View>
 
                                     <View style={{ flexDirection: 'row' }}>
-                                        {coffeeData.icons.map((icon, index) => (
-                                            <View
-                                                key={index}
+                                        {coffeeData.options.map((option, index) => (
+                                            <TouchableOpacity
+                                                key={option.id}
+                                                onPress={() => toggleOption(option.id)}
                                                 style={{
                                                     width: 36,
                                                     height: 36,
                                                     borderRadius: 10,
-                                                    backgroundColor: '#F9F2ED',
+                                                    backgroundColor: selectedOptions.includes(option.id) ? '#C67C4E' : '#F9F2ED',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
                                                     marginLeft: index > 0 ? 8 : 0,
                                                 }}
                                             >
-                                                <Text style={{ fontSize: 16 }}>{icon}</Text>
-                                            </View>
+                                                <Ionicons
+                                                    name={option.icon as any}
+                                                    size={16}
+                                                    color={selectedOptions.includes(option.id) ? 'white' : '#C67C4E'}
+                                                />
+                                            </TouchableOpacity>
                                         ))}
                                     </View>
                                 </View>

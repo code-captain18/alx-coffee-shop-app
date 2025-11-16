@@ -276,13 +276,13 @@ export default function DeliveryScreen() {
                                     width: 40,
                                     height: 40,
                                     borderRadius: 8,
-                                    backgroundColor: '#C67C4E',
+                                    backgroundColor: 'white',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     marginRight: 16,
                                 }}
                             >
-                                <Ionicons name="checkmark" size={22} color="white" />
+                                <Ionicons name="bicycle" size={22} color="#C67C4E" />
                             </View>
 
                             <View style={{ flex: 1 }}>
@@ -334,7 +334,7 @@ export default function DeliveryScreen() {
                                     }}
                                 >
                                     <Image
-                                        source={{ uri: 'https://via.placeholder.com/50x50/808080/FFFFFF?text=BS' }}
+                                        source={require('@/assets/images/driver.png')}
                                         style={{
                                             width: '100%',
                                             height: '100%',
