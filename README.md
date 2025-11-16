@@ -1,50 +1,42 @@
-# Welcome to your Expo app 👋
+📝 Development Process & Challenges
+🚀 Project Initialization
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+I started the project by running:
 
-## Get started
+npx create-expo-app@latest
 
-1. Install dependencies
 
-   ```bash
-   npm install
-   ```
+After the project was created, I reset the boilerplate setup using:
 
-2. Start the app
+npx reset-project
 
-   ```bash
-   npx expo start
-   ```
 
-In the output, you'll find options to open the app in a
+This helped me start with a minimal and clean structure. I then installed NativeWind to make styling faster and more intuitive.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+🎨 Building the UI
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+I began by creating the Onboarding Screen. This was the most challenging part visually, especially trying to achieve the right layout and feel. After some trial and error, I managed to get it working smoothly using a linear gradient for the background.
 
-## Get a fresh project
+Next, I created the tab group for the Home section and its respective tabs. After that, I built the Home Screen and focused on making the UI reusable and efficient.
 
-When you're ready, run:
+🧩 Reusable Components
 
-```bash
-npm run reset-project
-```
+To avoid repeating UI elements, I built reusable components, including:
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+A Card component
 
-## Learn more
+A Pill component for selecting coffee types
 
-To learn more about developing your project with Expo, look at the following resources:
+This helped make the codebase cleaner and more maintainable.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+🎛️ Styling Improvements
 
-## Join the community
+Initially, I relied heavily on inline styles, but as the UI grew more complex, it became harder to manage. I switched to using separate style files for each screen, which improved organization and readability.
 
-Join our community of developers creating universal apps.
+⚔️ Challenges Faced
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Getting the perfect look for the onboarding screen took a lot of tweaking. Achieving the right gradient effect and layout alignment was tough but rewarding once it finally came together.
+
+Switching from inline styles to dedicated style files required refactoring, but it ultimately improved maintainability.
+
+Structuring the tab navigation and organizing the files in a scalable way took some planning.
