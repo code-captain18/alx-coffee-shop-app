@@ -77,7 +77,7 @@ export default function CoffeeDetail() {
     return (
         <>
             <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#313131' }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffffff' }}>
                 <View style={{ flex: 1 }}>
                     {/* Header */}
                     <View
@@ -87,7 +87,7 @@ export default function CoffeeDetail() {
                             alignItems: 'center',
                             paddingHorizontal: 24,
                             paddingVertical: 16,
-                            backgroundColor: '#313131',
+                            backgroundColor: '#ffffffff',
                         }}
                     >
                         <TouchableOpacity
@@ -96,19 +96,19 @@ export default function CoffeeDetail() {
                                 width: 44,
                                 height: 44,
                                 borderRadius: 12,
-                                backgroundColor: '#52555A',
+                                backgroundColor: '#ffffffff',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}
                         >
-                            <Ionicons name="arrow-back" size={24} color="white" />
+                            <Ionicons name="arrow-back" size={24} color="black" />
                         </TouchableOpacity>
 
                         <Text
                             style={{
                                 fontSize: 20,
                                 fontFamily: 'Sora_600SemiBold',
-                                color: 'white',
+                                color: 'black',
                                 textAlign: 'center',
                             }}
                         >
@@ -121,7 +121,7 @@ export default function CoffeeDetail() {
                                 width: 44,
                                 height: 44,
                                 borderRadius: 12,
-                                backgroundColor: '#52555A',
+                                backgroundColor: '#ffffffff',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}
@@ -129,7 +129,7 @@ export default function CoffeeDetail() {
                             <Ionicons
                                 name={isFavorite ? "heart" : "heart-outline"}
                                 size={24}
-                                color={isFavorite ? "#DC3535" : "white"}
+                                color={isFavorite ? "#DC3535" : "black"}
                             />
                         </TouchableOpacity>
                     </View>
